@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To-Do App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+
+<body>
+    <div class="app-container">
+
+        <form action="/update/{{ datas.SN }}" method="post" class="task-form">
+            <input type="text" name="tasks" value="{{ datas.Desc }}"/>
+            <button type="submit">Update</button>
+        </form>
+
+    </div>
+</body>
+
+</html>

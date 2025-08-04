@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To-Do App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+
+<body>
+    <div class="app-container">
+        <header>
+            <h1>My To-Do List</h1>
+            <p>Add Your Task Here !</p>
+        </header>
+
+        <form action="/" method="post" class="task-form">
+            <input type="text" name="tasks" placeholder="Enter a new task..." required />
+            <button type="submit">Add</button>
+        </form>
+
+        <div class="table-wrapper">
+            <table class="task-table">
+                <thead>
+                    <tr>
+                        <th>S/N</th>
+                        <th>Task</th>
+                        <th>Status</th>
+                        <th colspan="2">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in datas %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ data.Desc }}</td>
+                        <td>
+                            <select class="status">
+                                <option value="" disabled selected>Pending</option>
+                                <option value="india">Working</option>
+                                <option value="usa">Completed</option>
+                            </select>
+
+                        </td>
+                        <td><a  href="/update/{{ data.SN}}"  method="post" class="edit-btn">Edit</a></td>
+                        <td><a  href="/delete/{{ data.SN}}" class="delete-btn">Delete</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>
