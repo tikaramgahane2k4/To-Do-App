@@ -17,6 +17,7 @@ body {
 .app-container {
     max-width: 1000px;
     margin: auto;
+    margin-top: 100px;
     background: #ffffff;
     padding: 20px;
     border-radius: 12px;
@@ -24,6 +25,9 @@ body {
     display: flex;
     flex-direction: column;
     gap: 20px;
+}
+a {
+    text-decoration: none;
 }
 
 /* HEADER */
@@ -187,7 +191,7 @@ header p {
 
     .task-table th,
     .task-table td {
-        padding: 8px;
+        padding: 5px;
         font-size: 0.8rem;
     }
 
@@ -220,7 +224,7 @@ header p {
     .task-table th,
     .task-table td {
         font-size: 0.75rem;
-        padding: 6px;
+        padding: 4px;
     }
 
     .edit-btn,
@@ -238,7 +242,4 @@ header p {
     header h1 {
         font-size: 1.4rem;
     }
-}
-a {
-    text-decoration: none;
 }

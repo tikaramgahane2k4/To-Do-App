@@ -29,9 +29,9 @@ def home():
 
         datas = Datas(
             Desc = desc,
-            Status = "pending"
-            # Date = datetime.utcnow()
+            Status = "Working"
         )
+        
         db.session.add(datas)
         db.session.commit()
 
