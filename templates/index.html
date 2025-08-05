@@ -6,13 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>To-Do App</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+    <script defer src="{{ url_for('static', filename='js/script.js') }}"></script>
 </head>
 
 <body>
     <div class="app-container">
         <header>
             <h1>My To-Do List</h1>
-            <p>Add Your Task Here !</p>
+            <p>Add Your Task Here!</p>
+            <button id="darkToggle" class="dark-toggle">🌙</button>
         </header>
 
         <form action="/" method="post" class="task-form">
@@ -37,14 +39,13 @@
                         <td>{{ data.Desc }}</td>
                         <td>
                             <select class="status">
-                                <option>Pending</option>
-                                <option>Working</option>
-                                <option>Completed</option>
+                                <option {% if data.Status=='Pending' %}selected{% endif %}>Pending</option>
+                                <option {% if data.Status=='Working' %}selected{% endif %}>Working</option>
+                                <option {% if data.Status=='Completed' %}selected{% endif %}>Completed</option>
                             </select>
-
                         </td>
-                        <td><a  href="/update/{{ data.SN}}"  method="post" class="edit-btn">Edit</a></td>
-                        <td><a  href="/delete/{{ data.SN}}" class="delete-btn">Delete</a></td>
+                        <td><a href="/update/{{ data.SN }}" class="edit-btn">Edit</a></td>
+                        <td><a href="/delete/{{ data.SN }}" class="delete-btn">Delete</a></td>
                     </tr>
                     {% endfor %}
                 </tbody>

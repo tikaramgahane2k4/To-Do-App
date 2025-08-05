@@ -52,6 +52,7 @@ def Update(SN):
     if request.method == "POST":
 
         desc = request.form.get("tasks")
+        
         datas = Datas.query.filter_by(SN=SN).first()
 
         datas.Desc = desc
