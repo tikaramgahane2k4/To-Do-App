@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task History - To-Do App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+    <script defer src="{{ url_for('static', filename='js/script.js') }}"></script>
+</head>
+
+<body>
+    <div class="app-container">
+        <header>
+            <h1>Task History</h1>
+            <p>Your Submitted Tasks</p>
+            <div class="header-controls">
+                <span class="user-name">👤 {{ session.user_name }}</span>
+                <a href="/" class="logout-btn">← Back to Tasks</a>
+                <a href="/logout" class="logout-btn">Logout</a>
+            </div>
+        </header>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="table-wrapper">
+            {% if submissions %}
+                <table class="task-table">
+                    <thead>
+                        <tr>
+                            <th>S/N</th>
+                            <th>Task Name</th>
+                            <th>Status</th>
+                            <th>Submitted Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for submission in submissions %}
+                        <tr class="history-row">
+                            <td data-label="S/N">{{ loop.index }}</td>
+                            <td data-label="Task Name">{{ submission.task_name }}</td>
+                            <td data-label="Status">
+                                <span class="status-badge status-{{ submission.status.lower() }}">
+                                    {{ submission.status }}
+                                </span>
+                            </td>
+                            <td data-label="Submitted Date">{{ submission.submitted_at.strftime('%d-%m-%Y %H:%M:%S') }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <div class="empty-state">
+                    <p>📝 No submitted tasks yet!</p>
+                    <p class="empty-text">Your completed tasks will appear here.</p>
+                    <a href="/" class="btn-primary">Go Back to Tasks</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+
+</html>

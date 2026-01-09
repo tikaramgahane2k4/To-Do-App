@@ -4,16 +4,43 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>To-Do App</title>
+    <title>Update Task - To-Do App</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
 </head>
 
 <body>
     <div class="app-container">
+        <header>
+            <h1>Update Task</h1>
+            <div class="header-controls">
+                <a href="/" class="logout-btn">← Back</a>
+            </div>
+        </header>
 
-        <form action="/update/{{ datas.SN }}" method="post" class="task-form">
-            <input type="text" name="tasks" value="{{ datas.Desc }}"/>
-            <button type="submit">Update</button>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form action="/update/{{ datas.id }}" method="post" class="task-form edit-form">
+            <div class="form-group">
+                <label>Task Description:</label>
+                <input type="text" name="tasks" value="{{ datas.tasks }}" required/>
+            </div>
+            
+            <div class="form-group">
+                <label>Status:</label>
+                <select name="status" class="status-select">
+                    <option value="Pending" {% if datas.status=='Pending' %}selected{% endif %}>Pending</option>
+                    <option value="Working" {% if datas.status=='Working' %}selected{% endif %}>Working</option>
+                    <option value="Completed" {% if datas.status=='Completed' %}selected{% endif %}>Completed</option>
+                </select>
+            </div>
+            
+            <button type="submit" class="btn-submit">Update</button>
         </form>
 
     </div>

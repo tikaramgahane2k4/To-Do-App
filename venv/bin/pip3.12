@@ -1,5 +1,5 @@
 #!/bin/sh
-'''exec' "/home/tikaram/Desktop/To-Do App/venv/bin/python3" "$0" "$@"
+'''exec' "/home/sama/To-Do App/venv/bin/python3" "$0" "$@"
 ' '''
 # -*- coding: utf-8 -*-
 import re

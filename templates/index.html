@@ -11,14 +11,34 @@
 
 <body>
     <div class="app-container">
-        <header>
-            <h1>My To-Do List</h1>
-            <p>Add Your Task Here!</p>
-            <button id="darkToggle" class="dark-toggle">🌙</button>
+        <header class="hero">
+            <div class="title-block">
+                <p class="eyebrow">Plan. Do. Done.</p>
+                <h1>My To-Do List</h1>
+                <p class="subhead">Add your tasks and keep status updated.</p>
+            </div>
+            <div class="header-controls">
+                <span class="user-pill">👤 {{ session.user_name }}</span>
+                <a href="/history" class="history-btn">📋 History</a>
+                <a href="/logout" class="logout-btn">Logout</a>
+            </div>
         </header>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
 
         <form action="/" method="post" class="task-form">
             <input type="text" name="tasks" placeholder="Enter a new task..." required />
+            <select name="status" class="status-select">
+                <option value="Pending">Pending</option>
+                <option value="Working">Working</option>
+                <option value="Completed">Completed</option>
+            </select>
             <button type="submit">Add</button>
         </form>
 
@@ -29,23 +49,34 @@
                         <th>S/N</th>
                         <th>Task</th>
                         <th>Status</th>
-                        <th colspan="2">Actions</th>
+                        <th colspan="3">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for data in datas %}
-                    <tr>
-                        <td>{{ loop.index }}</td>
-                        <td>{{ data.Desc }}</td>
-                        <td>
-                            <select class="status">
-                                <option {% if data.Status=='Pending' %}selected{% endif %}>Pending</option>
-                                <option {% if data.Status=='Working' %}selected{% endif %}>Working</option>
-                                <option {% if data.Status=='Completed' %}selected{% endif %}>Completed</option>
-                            </select>
+                    <tr class="task-row {% if data.is_submitted %}submitted-row{% endif %}">
+                        <td data-label="S/N">{{ loop.index }}</td>
+                        <td data-label="Task">{{ data.tasks }}</td>
+                        <td data-label="Status">
+                            <form method="post" action="/update/{{ data.id }}" style="display: inline;">
+                                <select name="status" class="status-select" onchange="this.form.submit();" {% if data.is_submitted %}disabled{% endif %}>
+                                    <option value="Pending" {% if data.status=='Pending' %}selected{% endif %}>Pending</option>
+                                    <option value="Working" {% if data.status=='Working' %}selected{% endif %}>Working</option>
+                                    <option value="Completed" {% if data.status=='Completed' %}selected{% endif %}>Completed</option>
+                                </select>
+                            </form>
                         </td>
-                        <td><a href="/update/{{ data.SN }}" class="edit-btn">Edit</a></td>
-                        <td><a href="/delete/{{ data.SN }}" class="delete-btn">Delete</a></td>
+                        <td data-label="Edit"><a href="/update/{{ data.id }}" class="edit-btn" {% if data.is_submitted %}style="opacity: 0.5; pointer-events: none;"{% endif %}>Edit</a></td>
+                        <td data-label="Delete"><a href="/delete/{{ data.id }}" class="delete-btn" {% if data.is_submitted %}style="opacity: 0.5; pointer-events: none;"{% endif %}>Delete</a></td>
+                        <td data-label="Submit">
+                            {% if data.is_submitted %}
+                                <span class="submit-badge">✓ Submitted</span>
+                            {% elif data.status == 'Completed' %}
+                                <button type="button" class="submit-btn" onclick="submitTask({{ data.id }})">Submit</button>
+                            {% else %}
+                                <span class="status-disabled">Mark Completed to Submit</span>
+                            {% endif %}
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>
